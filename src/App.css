@@ -1,8 +1,11 @@
+
+/* GLOBAL */
 img{
   width: 100%;
   height: 100%;
 }
 
+/* CARD CUSTOMISE */
 a.card{
   text-decoration: none;
   transition: all 0.3s ease-in-out;
@@ -10,4 +13,13 @@ a.card{
 a.card:hover{
   background-color: aliceblue;
   box-shadow: none!important;
+}
+
+
+/* PARAGRAPH LINE LIMIT */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
 }
