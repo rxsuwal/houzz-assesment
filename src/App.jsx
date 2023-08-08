@@ -20,7 +20,7 @@ function App() {
   // PAGINATION DATA
   const [paginate, setPaginate] = useState({
     page: 1,
-    perPage: 2,
+    perPage: 10,
   })
 
   // LOAD MORE LOADER
@@ -70,6 +70,8 @@ function App() {
     <div className="container-fluid">
       <div className="w-md-75 m-auto">
         <Tab.Container defaultActiveKey={tabControl}>
+
+          {/* NAV TABS */}
           <Nav id="beer-tabs" className="bg-white sticky-top">
             <div className="container py-4 mb-2 d-flex justify-content-md-between justify-content-center gap-2 flex-wrap">
             <div className='d-flex'>
@@ -80,31 +82,51 @@ function App() {
                 <Nav.Link eventKey="second" onClick={() => setTabControl("second")}>My Beers</Nav.Link>
               </Nav.Item>
             </div>
+
+            {/* TAB CONTROL CHECK FOR ADD MY BEER */}
             {tabControl == "second" && <button className="btn btn-primary" onClick={() => setAddBeerModal(true)}>Add a New Beer</button>}
 
             </div>
           </Nav>
+          {/* --END NAV TABS */}
 
           <Tab.Content className='container'>
+
+            {/* ALL BEER TAB CONTENT*/}
             <Tab.Pane eventKey="first">
 
+              {/* INTIAL LOAD SPINNER */}
             {allBeers.loading && <Spinner className='mx-auto d-flex my-4' />}
+
+              {/* ALL BEER DATA */}
                 {!allBeers.loading && <>
-                  {!allBeers.error ? <BeerList data={allBeers.data}/>:
+                  {!allBeers.error ? 
+                  <BeerList data={allBeers.data}/>
+                  :
                     <div className="text-center text-danger">
                       {allBeers.error}
                     </div>}
                     
-
                 </>}
+              {/* --END ALL BEER DATA */}
+
+
+                {/* LOAD MORE SPINNER */}
               {loadMoreLoader && <Spinner className='m-auto d-flex my-4' />}
-                {!loadMoreLoader && !allBeers.loading && <button type="button" 
-                class="btn fw-bold text-primary m-auto my-4 d-flex"
+
+              {/* LOAD MORE */}
+                {!loadMoreLoader && !allBeers.loading && 
+                <button type="button" 
+                        class="btn fw-bold text-primary m-auto my-4 d-flex"
                         onClick={() => loadMore()}>
                         Load More <i class="bi bi-chevron-down"></i>
-                      </button>}
+                    </button>}
+              {/* --END LOAD MORE */}
 
             </Tab.Pane>
+            {/* --END ALL BEER TAB CONTENT*/}
+
+            {/* MY BEER TAB CONTENT */}
             <Tab.Pane eventKey="second">
 
               {/* IF MY BEERS IS EMPTY OR NOT EMPTY */}
@@ -113,7 +135,6 @@ function App() {
                   style={{ height: "200px" }} >
                   <div>
                     Nothing to see yet.
-
                   </div>
                   <div>
                     <a role='button' onClick={()=>setAddBeerModal(true)} className='link link-primary'>Click here</a>
@@ -124,8 +145,14 @@ function App() {
                 <BeerList data={myBeers}/>
               }
 
+              {/* --END IF MY BEERS IS EMPTY OR NOT EMPTY */}
+
             </Tab.Pane>
+            {/* --END MY BEER TAB CONTENT */}
+
+
           </Tab.Content>
+
         </Tab.Container>
       </div>
       <AddBeerModal show={addBeerModal} close={() => setAddBeerModal(false)} onSubmit={addMyBeer} />

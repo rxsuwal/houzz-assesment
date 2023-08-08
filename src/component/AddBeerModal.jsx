@@ -28,25 +28,31 @@ function AddBeerModal(props) {
                 >
                     {({ isSubmitting, values, handleChange }) => (
                         <Form>
-
+                            {/* IMAGE */}
                             <figure className='h-150px text-start w-fit-content'>
                                 <img src={values.image_url} class="rounded float-start object-contain" alt="..." />
                             </figure>
+
+                            {/* NAME INPUT */}
                             <div className="form-group mb-4">
                                 <Field className="form-control" type="text" name="name" placeholder="Beer Name*" onChange={handleChange} value={values.name} />
                                 <ErrorMessage className='text-danger' name="name" component="small" />
                             </div>
 
+                            {/* GENRE INPUT */}
                             <div className="form-group mb-4">
                                 <Field className="form-control" type="text" name="tagline" placeholder="Genre*" onChange={handleChange} value={values.tagline} />
                                 <ErrorMessage className='text-danger' name="tagline" component="small" />
                             </div>
 
+                            {/* DESCRIPTION INPUT */}
                             <div className="form-group mb-4">
                                 <Field className="form-control" type="text" name="description" placeholder="Description*" onChange={handleChange} value={values.description} as="textarea" />
                                 <ErrorMessage className='text-danger' name="description" component="small" />
                             </div>
 
+
+                            {/* ACTION BUTTONS */}
                             <div className="d-flex align-items-center justify-content-end column-gap-2">
                                 <button type="reset" className='btn btn-reset' onClick={props.close} >
                                     Cancel
@@ -56,6 +62,7 @@ function AddBeerModal(props) {
                                     {!isSubmitting ? "Save" : <>Saving.. <Spinner size='sm' /></>}
                                 </button>
                             </div>
+
                         </Form>
                     )}
                 </Formik>
