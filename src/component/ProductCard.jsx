@@ -2,7 +2,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 export function ProductCard(props) {
   return (
-    <a href='#' class="card flex-md-row border border-0 align-items-center shadow h-100" >
+    <a href='#' class="card flex-md-row border border-0 align-items-md-center shadow h-100" >
 
       {props.data.ingredients ?
         <OverlayTrigger overlay={<Tooltip>{`Ingredients: ${Object?.keys(props.data?.ingredients)}`}</Tooltip>}>

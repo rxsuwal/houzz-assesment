@@ -3,7 +3,7 @@ import { ProductCard } from './ProductCard'
 
 function BeerList(props) {
     return (
-        <div className="row g-4">
+        <div className="row g-4 mb-4">
             {
                 props.data.map((a) => {
                     return (

@@ -1,13 +1,10 @@
 
 import './App.css';
-import { Button, Card, Col, Modal, Nav, OverlayTrigger, Row, Spinner, Tab, Tabs, Tooltip } from 'react-bootstrap';
+import { Nav, Spinner, Tab } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from "axios";
-import { ProductCard } from './component/ProductCard';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { addBeerValidation } from './utils/validation';
 import AddBeerModal from './component/AddBeerModal';
 import BeerList from './component/BeerList';
 
@@ -17,7 +14,8 @@ function App() {
   // ALL BEERS 
   const [allBeers, setallBeers] = useState({
     data: [],
-    loading: true
+    loading: true,
+    error:""
   })
   // PAGINATION DATA
   const [paginate, setPaginate] = useState({
@@ -33,11 +31,11 @@ function App() {
 
   // GET BEERS FUNCTION
   const getBeers = (async (pagination) => {
-    await axios.get(`https://api.punkapi.com/v2/beers?page1=${pagination.page}&per_page=${pagination.perPage}`).then(res => {
-      setallBeers({data: allBeers.data.concat(res.data),loading: false })
+    await axios.get(`https://api.punkapi.com/v2/beers?page=${pagination.page}&per_page=${pagination.perPage}`).then(res => {
+      setallBeers({...allBeers, data: allBeers.data.concat(res.data),loading:false })
     }).catch(err => {
       console.log(err)
-      setallBeers({data: err.response.data.message,loading: false  })
+      setallBeers({...allBeers,error:err.response.data.message,loading:false })
     }).then(() => {
       setLoadMoreLoader(false)
     })
@@ -92,9 +90,11 @@ function App() {
 
             {allBeers.loading && <Spinner className='mx-auto d-flex my-4' />}
                 {!allBeers.loading && <>
-                  {!allBeers.data?.isArray ?
-                  <BeerList data={allBeers.data}/>
-                    : allBeers.data}
+                  {!allBeers.error ? <BeerList data={allBeers.data}/>:
+                    <div className="text-center text-danger">
+                      {allBeers.error}
+                    </div>}
+                    
 
                 </>}
               {loadMoreLoader && <Spinner className='m-auto d-flex my-4' />}
