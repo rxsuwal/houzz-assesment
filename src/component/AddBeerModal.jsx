@@ -4,6 +4,7 @@ import { Modal, Spinner } from 'react-bootstrap'
 import { addBeerValidation } from '../utils/validation'
 
 function AddBeerModal(props) {
+
     return (
         <Modal
             {...props}
@@ -21,6 +22,8 @@ function AddBeerModal(props) {
                     initialValues={{ image_url: "./beer.png", name: "", tagline: "", description: "" }}
                     validationSchema={addBeerValidation}
                     onSubmit={(values, { setSubmitting }) => {
+                        values.id = crypto.randomUUID()
+
                         setTimeout(() => {
                             props.onSubmit(values)
                         }, 1000);
@@ -30,30 +33,30 @@ function AddBeerModal(props) {
                         <Form>
                             {/* IMAGE */}
                             <figure className='h-150px text-start w-fit-content'>
-                                <img src={values.image_url} class="rounded float-start object-contain" alt="..." />
+                                <img src={values.image_url} className="rounded float-start object-contain" alt="..." />
                             </figure>
 
                             {/* NAME INPUT */}
-                            <div className="form-group mb-4">
+                            <div className="form-group mb-md-4 mb-3">
                                 <Field className="form-control" type="text" name="name" placeholder="Beer Name*" onChange={handleChange} value={values.name} />
                                 <ErrorMessage className='text-danger' name="name" component="small" />
                             </div>
 
                             {/* GENRE INPUT */}
-                            <div className="form-group mb-4">
+                            <div className="form-group mb-md-4 mb-3">
                                 <Field className="form-control" type="text" name="tagline" placeholder="Genre*" onChange={handleChange} value={values.tagline} />
                                 <ErrorMessage className='text-danger' name="tagline" component="small" />
                             </div>
 
                             {/* DESCRIPTION INPUT */}
-                            <div className="form-group mb-4">
+                            <div className="form-group mb-md-6 mb-4">
                                 <Field className="form-control" type="text" name="description" placeholder="Description*" onChange={handleChange} value={values.description} as="textarea" />
                                 <ErrorMessage className='text-danger' name="description" component="small" />
                             </div>
 
 
                             {/* ACTION BUTTONS */}
-                            <div className="d-flex align-items-center justify-content-end column-gap-2">
+                            <div className="d-flex align-items-center justify-content-md-end justify-content-center column-gap-2">
                                 <button type="reset" className='btn btn-reset' onClick={props.close} >
                                     Cancel
                                 </button>

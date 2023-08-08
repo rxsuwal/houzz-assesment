@@ -27,14 +27,13 @@ function App() {
   const [loadMoreLoader, setLoadMoreLoader] = useState(false)
 
   // TAB CONTROLS
-  const [tabControl, setTabControl] = useState("first")
+  const [tabControl, setTabControl] = useState("all")
 
   // GET BEERS FUNCTION
   const getBeers = (async (pagination) => {
     await axios.get(`https://api.punkapi.com/v2/beers?page=${pagination.page}&per_page=${pagination.perPage}`).then(res => {
       setallBeers({...allBeers, data: allBeers.data.concat(res.data),loading:false })
     }).catch(err => {
-      console.log(err)
       setallBeers({...allBeers,error:err.response.data.message,loading:false })
     }).then(() => {
       setLoadMoreLoader(false)
@@ -61,7 +60,13 @@ function App() {
   // ADD MY BEER
   const [addBeerModal, setAddBeerModal] = useState(false)
   const addMyBeer = (data) => {
-    setMyBeers(myBeers.concat(data))
+    
+    const newMyBeer = myBeers.concat(data)
+    
+    // SORT BY NAME ASCENDING ALPHABETICALLY
+    newMyBeer.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+
+    setMyBeers(newMyBeer)
     setAddBeerModal(false)
   }
 
@@ -76,15 +81,16 @@ function App() {
             <div className="container py-4 mb-2 d-flex justify-content-md-between justify-content-center gap-2 flex-wrap">
             <div className='d-flex'>
               <Nav.Item>
-                <Nav.Link eventKey="first" onClick={() => setTabControl("first")}>All Beers</Nav.Link>
+                <Nav.Link eventKey="all" onClick={() => setTabControl("all")}>All Beers</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="second" onClick={() => setTabControl("second")}>My Beers</Nav.Link>
+                
+                <Nav.Link eventKey="my" onClick={() => setTabControl("my")}>My Beers</Nav.Link>
               </Nav.Item>
             </div>
 
             {/* TAB CONTROL CHECK FOR ADD MY BEER */}
-            {tabControl == "second" && <button className="btn btn-primary" onClick={() => setAddBeerModal(true)}>Add a New Beer</button>}
+            {tabControl == "my" && <button className="btn btn-primary" onClick={() => setAddBeerModal(true)}>Add a New Beer</button>}
 
             </div>
           </Nav>
@@ -93,7 +99,7 @@ function App() {
           <Tab.Content className='container'>
 
             {/* ALL BEER TAB CONTENT*/}
-            <Tab.Pane eventKey="first">
+            <Tab.Pane eventKey="all">
 
               {/* INTIAL LOAD SPINNER */}
             {allBeers.loading && <Spinner className='mx-auto d-flex my-4' />}
@@ -117,9 +123,9 @@ function App() {
               {/* LOAD MORE */}
                 {!loadMoreLoader && !allBeers.loading && 
                 <button type="button" 
-                        class="btn fw-bold text-primary m-auto my-4 d-flex"
+                        className="btn fw-bold text-primary m-auto my-4 d-flex"
                         onClick={() => loadMore()}>
-                        Load More <i class="bi bi-chevron-down"></i>
+                        Load More <i className="bi bi-chevron-down"></i>
                     </button>}
               {/* --END LOAD MORE */}
 
@@ -127,7 +133,7 @@ function App() {
             {/* --END ALL BEER TAB CONTENT*/}
 
             {/* MY BEER TAB CONTENT */}
-            <Tab.Pane eventKey="second">
+            <Tab.Pane eventKey="my">
 
               {/* IF MY BEERS IS EMPTY OR NOT EMPTY */}
               {myBeers.length == 0 ?
