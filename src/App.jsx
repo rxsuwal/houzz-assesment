@@ -9,6 +9,7 @@ import { ProductCard } from './component/ProductCard';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { addBeerValidation } from './utils/validation';
 import AddBeerModal from './component/AddBeerModal';
+import BeerList from './component/BeerList';
 
 
 
@@ -33,14 +34,14 @@ function App() {
   // GET BEERS FUNCTION
   const getBeers = (async (pagination) => {
     await axios.get(`https://api.punkapi.com/v2/beers?page1=${pagination.page}&per_page=${pagination.perPage}`).then(res => {
-      setallBeers({ data: allBeers.data.concat(res.data), loading: false })
+      setallBeers({data: allBeers.data.concat(res.data),loading: false })
     }).catch(err => {
       console.log(err)
-      setallBeers({ data: err.response.data.message, loading: false })
+      setallBeers({data: err.response.data.message,loading: false  })
     }).then(() => {
       setLoadMoreLoader(false)
     })
-  })
+  }) 
 
   // LOAD MORE BEERS
   const loadMore = () => {
@@ -67,13 +68,12 @@ function App() {
   }
 
 
-
-
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="w-md-75 m-auto">
         <Tab.Container defaultActiveKey={tabControl}>
-          <Nav id="beer-tabs" className="my-4 justify-content-between">
+          <Nav id="beer-tabs" className="bg-white sticky-top">
+            <div className="container py-4 mb-2 d-flex justify-content-md-between justify-content-center gap-2 flex-wrap">
             <div className='d-flex'>
               <Nav.Item>
                 <Nav.Link eventKey="first" onClick={() => setTabControl("first")}>All Beers</Nav.Link>
@@ -84,38 +84,25 @@ function App() {
             </div>
             {tabControl == "second" && <button className="btn btn-primary" onClick={() => setAddBeerModal(true)}>Add a New Beer</button>}
 
+            </div>
           </Nav>
 
-          <Tab.Content>
+          <Tab.Content className='container'>
             <Tab.Pane eventKey="first">
-              <div className="row gy-4 gx-5">
-                {allBeers.loading && <Spinner className='m-auto my-4' />}
 
+            {allBeers.loading && <Spinner className='mx-auto d-flex my-4' />}
                 {!allBeers.loading && <>
                   {!allBeers.data?.isArray ?
-
-                    <>
-                      {
-                        allBeers.data?.map((a) => {
-                          return (
-                            <div className="col-xl-6" key={a.id}>
-                              <ProductCard data={a} />
-                            </div>
-                          )
-                        })
-                      }
-
-                      {loadMoreLoader && <Spinner className='m-auto my-4' />}
-                      {!loadMoreLoader && <button type="button" class="btn fw-bold text-primary m-auto my-4"
-                        onClick={() => loadMore()}>
-                        Load More <i class="bi bi-chevron-down"></i>
-                      </button>}
-
-                    </>
+                  <BeerList data={allBeers.data}/>
                     : allBeers.data}
 
                 </>}
-              </div>
+              {loadMoreLoader && <Spinner className='m-auto d-flex my-4' />}
+                {!loadMoreLoader && !allBeers.loading && <button type="button" 
+                class="btn fw-bold text-primary m-auto my-4 d-flex"
+                        onClick={() => loadMore()}>
+                        Load More <i class="bi bi-chevron-down"></i>
+                      </button>}
 
             </Tab.Pane>
             <Tab.Pane eventKey="second">
@@ -134,17 +121,7 @@ function App() {
 
                   </div>
                 </div> :
-                <div className="row g-4">
-                  {
-                    myBeers.map((a) => {
-                      return (
-                        <div className="col-xl-6" key={a.id}>
-                          <ProductCard data={a} />
-                        </div>
-                      )
-                    })
-                  }
-                </div>
+                <BeerList data={myBeers}/>
               }
 
             </Tab.Pane>
