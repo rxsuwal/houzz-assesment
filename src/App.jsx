@@ -25,10 +25,11 @@ function App() {
 
 
   const getBeers = (async (pagination) => {
-    await axios.get(`https://api.punkapi.com/v2/beers?page=${pagination.page}&per_page=${pagination.perPage}`).then(res => {
+    await axios.get(`https://api.punkapi.com/v2/beers?page1=${pagination.page}&per_page=${pagination.perPage}`).then(res => {
       setallBeers({ data: allBeers.data.concat(res.data), loading: false })
     }).catch(err => {
-      setallBeers({ data: err.response.data, loading: false })
+      console.log(err)
+      setallBeers({ data: err.response.data.message, loading: false })
     }).then(() => {
       setLoadMoreLoader(false)
     })
@@ -50,15 +51,16 @@ function App() {
   return (
     <div className="container">
       <div className="w-md-75 m-auto">
-        <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-          <Nav variant="pills" className=" mb-4">
+        <Tab.Container defaultActiveKey="first">
+          <Nav id="beer-tabs" variant="" className=" my-4">
             <Nav.Item>
-              <Nav.Link eventKey="first">Tab 1</Nav.Link>
+              <Nav.Link eventKey="first">All Beers</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="second">Tab 2</Nav.Link>
+              <Nav.Link eventKey="second">My Beers</Nav.Link>
             </Nav.Item>
           </Nav>
+
           <Tab.Content>
             <Tab.Pane eventKey="first">
 
@@ -66,7 +68,7 @@ function App() {
                 {allBeers.loading && <Spinner className='m-auto my-4' />}
 
                 {!allBeers.loading && <>
-                  {!allBeers.data.isArray ?
+                  {!allBeers.data?.isArray ?
 
                     <>
                       {
@@ -79,15 +81,14 @@ function App() {
                         })
                       }
 
-
                       {loadMoreLoader && <Spinner className='m-auto my-4' />}
-                      {!loadMoreLoader && <button type="button" class="btn fw-bold text-primary m-auto"
+                      {!loadMoreLoader && <button type="button" class="btn fw-bold text-primary m-auto my-4"
                         onClick={() => loadMore()}>
-                        Load More <i class="bi bi-chevron-down fw-bolder"></i>
+                        Load More <i class="bi bi-chevron-down"></i>
                       </button>}
 
                     </>
-                    : allBeers?.data}
+                    : allBeers.data}
 
                 </>}
               </div>

@@ -23,3 +23,14 @@ a.card:hover{
   -webkit-box-orient: vertical;  
   overflow: hidden;
 }
+
+/* CUSTOMIZATION */
+
+#beer-tabs .nav-link {
+  color: #b2b2b2!important;
+  font-weight: 500;
+}
+#beer-tabs .nav-link.active {
+  color: #000!important;
+}
+
