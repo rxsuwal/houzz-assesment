@@ -42,8 +42,10 @@ function App() {
 
   // LOAD MORE BEERS
   const loadMore = () => {
+    
+    setPaginate({ page: paginate.page ++ , ...paginate })
+
     setLoadMoreLoader(true)
-    setPaginate({ ...paginate, page: paginate.page + 1 })
     getBeers(paginate)
   }
 
@@ -78,7 +80,7 @@ function App() {
 
           {/* NAV TABS */}
           <Nav id="beer-tabs" className="bg-white sticky-top">
-            <div className="container py-4 mb-2 d-flex justify-content-md-between justify-content-center gap-2 flex-wrap">
+            <div className="container py-md-4 py-2 mb-2 d-flex justify-content-md-between justify-content-center gap-2 flex-wrap">
             <div className='d-flex'>
               <Nav.Item>
                 <Nav.Link eventKey="all" onClick={() => setTabControl("all")}>All Beers</Nav.Link>
@@ -124,8 +126,8 @@ function App() {
                 {!loadMoreLoader && !allBeers.loading && 
                 <button type="button" 
                         className="btn fw-bold text-primary m-auto my-4 d-flex"
-                        onClick={() => loadMore()}>
-                        Load More <i className="bi bi-chevron-down"></i>
+                        onClick={()=> loadMore()}>
+                        Load More <i className="bi bi-chevron-down"/>
                     </button>}
               {/* --END LOAD MORE */}
 
@@ -138,7 +140,7 @@ function App() {
               {/* IF MY BEERS IS EMPTY OR NOT EMPTY */}
               {myBeers.length == 0 ?
                 <div className='bg-light d-flex align-items-center justify-content-center flex-column'
-                  style={{ height: "200px" }} >
+                  style={{ height: "300px" }} >
                   <div>
                     Nothing to see yet.
                   </div>
@@ -161,7 +163,7 @@ function App() {
 
         </Tab.Container>
       </div>
-      <AddBeerModal show={addBeerModal} close={() => setAddBeerModal(false)} onSubmit={addMyBeer} />
+      <AddBeerModal show={addBeerModal} onHide={() => setAddBeerModal(false)} onSubmit={addMyBeer} />
     </div>
   );
 }

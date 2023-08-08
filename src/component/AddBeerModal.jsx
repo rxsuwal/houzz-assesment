@@ -57,7 +57,7 @@ function AddBeerModal(props) {
 
                             {/* ACTION BUTTONS */}
                             <div className="d-flex align-items-center justify-content-md-end justify-content-center column-gap-2">
-                                <button type="reset" className='btn btn-reset' onClick={props.close} >
+                                <button type="reset" className='btn btn-reset' onClick={props.onHide} >
                                     Cancel
                                 </button>
                                 <button type="submit" className='btn btn-primary' disabled={isSubmitting}>
